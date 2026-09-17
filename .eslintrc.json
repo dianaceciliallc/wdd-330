@@ -25,24 +25,25 @@
       }
     ],
     "no-console": 1,
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
     "func-names": 0,
     "space-unary-ops": 2,
-    "space-in-parens": "error",
-    "space-infix-ops": "error",
+    "space-in-parens": 0,
+    "space-infix-ops": 2,
     "comma-dangle": 0,
     "max-len": 0,
     "import/extensions": 0,
     "no-underscore-dangle": 0,
     "consistent-return": 0,
     "radix": 0,
+    "import/no-unresolved": ["error", { "ignore": ["^vite"] }],
+    "no-unused-expressions": "off",
     "no-shadow": [
       2,
       {
         "hoist": "all",
         "allow": ["resolve", "reject", "done", "next", "err", "error"]
       }
-    ],
-    "no-unused-expressions": "off"
+    ]
   }
 }

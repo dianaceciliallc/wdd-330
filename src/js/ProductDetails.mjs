@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, calculateDiscount } from "./utils.mjs";
 
 export default class ProductDetails {
     constructor(productID, dataSource) {
@@ -22,12 +22,22 @@ export default class ProductDetails {
         setLocalStorage("so-cart", cartItems);
     }
     renderProductDetails() {
+        const { isDiscounted, discountPercent } = calculateDiscount(this.product);
         const productDetails = document.querySelector(".product-detail");
         productDetails.innerHTML = `
-        <h3>${this.product.Brand.Name}</h3>
+            <h3>${this.product.Brand.Name}</h3>
         <h2 class="divider">${this.product.NameWithoutBrand}</h2>
-        <img class="divider" src="${this.product.Image}" alt="${this.product.Name}" />
-        <p class="product-card__price">$${this.product.ListPrice}</p>
+        
+        <div class="product-detail__image-container">
+            <img class="divider" src="${this.product.Image}" alt="${this.product.Name}"/>
+            ${isDiscounted ? `<span class="discount-badge">-${discountPercent}% OFF</span>` : ""}
+        </div>
+
+        <p class="product-card__price">
+            ${isDiscounted ? `<span class="original-price">$${this.product.SuggestedRetailPrice.toFixed(2)}</span>` : ""}
+            <span class="final-price">$${this.product.FinalPrice.toFixed(2)}</span>
+        </p>
+
         <p class="product__color">${this.product.Colors[0].ColorName}</p>
         <p class="product__description">${this.product.DescriptionHtmlSimple}</p>
         <div class="product-detail__add">

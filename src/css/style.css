@@ -208,7 +208,6 @@ button {
   display: grid;
   grid-template-columns: 25% auto 15%;
   font-size: var(--small-font);
-  /* max-height: 120px; */
   align-items: center;
 }
 
@@ -283,7 +282,7 @@ footer {
   border-radius: 4px;
 }
 
-/* Precio original tachado */
+/* Product discount badge for detail view */
 .original-price {
   text-decoration: line-through;
   color: #777777;
@@ -291,19 +290,17 @@ footer {
   font-size: 0.9em;
 }
 
-/* Contenedor de la imagen para posicionar el badge */
 .product-detail__image-container {
   position: relative;
   display: inline-block;
   width: 100%;
 }
 
-/* Badge de descuento */
 .discount-badge {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #d9534f; /* Color rojo de alerta/descuento */
+  background-color: #d9534f;
   color: #ffffff;
   padding: 6px 10px;
   font-size: 0.9rem;
@@ -313,7 +310,6 @@ footer {
   z-index: 10;
 }
 
-/* Estilo para los precios en el detalle del producto */
 .product-card__price {
   font-size: 1.25rem;
   font-weight: bold;
@@ -323,7 +319,6 @@ footer {
   gap: 10px;
 }
 
-/* Precio original tachado */
 .original-price {
   text-decoration: line-through;
   color: #777777;
@@ -331,7 +326,6 @@ footer {
   font-size: 1rem;
 }
 
-/* Precio final / con descuento */
 .final-price {
   color: #333333;
 }

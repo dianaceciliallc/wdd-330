@@ -3,14 +3,16 @@ import { getLocalStorage } from "./utils.mjs";
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart") || [];
   if (cartItems.length === 0) {
-    document.querySelector(".product-list").innerHTML = "<p>Your cart is empty.</p>";
+    document.querySelector(".product-list").innerHTML =
+      "<p>Your cart is empty.</p>";
     document.querySelector(".cart-footer").classList.add("hide");
     return;
   }
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
   const total = cartItems.reduce((acc, item) => acc + item.FinalPrice, 0);
-  document.querySelector(".cart-total-value").textContent = `$${total.toFixed(2)}`;
+  document.querySelector(".cart-total-value").textContent =
+    `$${total.toFixed(2)}`;
   document.querySelector(".cart-footer").classList.remove("hide");
 }
 

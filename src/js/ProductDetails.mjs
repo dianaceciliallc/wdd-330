@@ -14,7 +14,7 @@ export default class ProductDetails {
             .addEventListener("click", this.addProductToCart.bind(this));
     }
     addProductToCart() {
-        const cartItems = getLocalStorage("so-cart") || [];
+        let cartItems = getLocalStorage("so-cart") || [];
         if (!Array.isArray(cartItems)) {
             cartItems = [];
         }

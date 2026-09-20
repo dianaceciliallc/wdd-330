@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart") || [];
@@ -14,7 +14,8 @@ function renderCartContents() {
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
 
   const total = cartItems.reduce((acc, item) => acc + item.FinalPrice, 0);
-  document.querySelector(".cart-total-value").textContent = `$${total.toFixed(2)}`;
+  document.querySelector(".cart-total-value").textContent =
+    `$${total.toFixed(2)}`;
   document.querySelector(".cart-footer").classList.remove("hide");
 
   removeItem();
@@ -33,10 +34,11 @@ function removeItem() {
 function removeFromCart(id) {
   let cartItems = getLocalStorage("so-cart") || [];
   const index = cartItems.findIndex((item) => item.Id === id);
-  
+
   if (index !== -1) {
     cartItems.splice(index, 1);
     setLocalStorage("so-cart", cartItems);
+    updateCartCount();
     renderCartContents();
   }
 }

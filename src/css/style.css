@@ -208,7 +208,6 @@ button {
   display: grid;
   grid-template-columns: 25% auto 15%;
   font-size: var(--small-font);
-  /* max-height: 120px; */
   align-items: center;
 }
 
@@ -260,4 +259,94 @@ button {
 footer {
   font-size: var(--small-font);
   padding: 1em;
+}
+/* Utility class for hiding elements */
+.hide {
+  display: none;
+}
+
+/* Product List discount badge */
+.product-card {
+  position: relative;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #d9534f;
+  color: #ffffff;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+/* Product discount badge for detail view */
+.original-price {
+  text-decoration: line-through;
+  color: #777777;
+  margin-right: 6px;
+  font-size: 0.9em;
+}
+
+.product-detail__image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #d9534f;
+  color: #ffffff;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.product-card__price {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #777777;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.final-price {
+  color: #333333;
+}
+
+/* Remove item button */
+.cart-card {
+  position: relative;
+}
+
+.remove-item {
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ff4d4d;
+  user-select: none;
+}
+
+.remove-item:hover {
+  color: #d9534f;
+  transform: scale(1.1);
 }

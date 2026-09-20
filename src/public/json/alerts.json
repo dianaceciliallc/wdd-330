@@ -1,0 +1,12 @@
+[
+  {
+    "message": "This is only a test announcement!",
+    "background": "darkblue",
+    "color": "white"
+  },
+  {
+    "message": "Free shipping on orders over $50!",
+    "background": "gold",
+    "color": "black"
+  }
+]

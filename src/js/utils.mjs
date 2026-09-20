@@ -40,7 +40,7 @@ export function calculateDiscount(product) {
   if (!product || !product.SuggestedRetailPrice || !product.ListPrice) {
     return { isDiscounted: false, discountPercent: 0 };
   }
-  
+
   const isDiscounted = product.ListPrice < product.SuggestedRetailPrice;
   const discountPercent = isDiscounted
     ? Math.round(((product.SuggestedRetailPrice - product.ListPrice) / product.SuggestedRetailPrice) * 100)
@@ -50,4 +50,20 @@ export function calculateDiscount(product) {
     isDiscounted,
     discountPercent
   };
+}
+
+export function updateCartCount() {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const cartCountElement = qs(".cart-count");
+
+  if (!cartCountElement) return;
+
+  const totalItems = cartItems.length;
+  
+  if (totalItems > 0) {
+    cartCountElement.textContent = totalItems;
+    cartCountElement.classList.remove("hide");
+  } else {
+    cartCountElement.classList.add("hide");
+  }
 }

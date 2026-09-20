@@ -350,3 +350,30 @@ footer {
   color: #d9534f;
   transform: scale(1.1);
 }
+
+/* Cart products badge */
+.cart {
+  position: relative;
+  display: inline-block;
+}
+
+/* Badge con número de superíndice */
+.cart-count {
+  position: absolute;
+  top: 10px;
+  right: -6px;
+  background-color: #f0a83b; /* Ajusta al color de contraste de tu diseño */
+  color: #000000;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Ocultar si la cuenta es 0 */
+.cart-count.hide {
+  display: none;
+}

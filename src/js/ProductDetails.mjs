@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage, calculateDiscount } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, calculateDiscount, updateCartCount } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productID, dataSource) {
@@ -20,6 +20,7 @@ export default class ProductDetails {
     }
     cartItems.push(this.product);
     setLocalStorage("so-cart", cartItems);
+    updateCartCount();
   }
   renderProductDetails() {
     const { isDiscounted, discountPercent } = calculateDiscount(this.product);

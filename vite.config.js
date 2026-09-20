@@ -2,6 +2,8 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  base: "/wdd-330/", 
+
   root: "src/",
 
   build: {

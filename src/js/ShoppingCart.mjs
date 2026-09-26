@@ -5,7 +5,7 @@ function cartItemTemplate(item) {
   <li class="cart-card divider">
     <span class="remove-item" data-id="${item.Id}">❌</span>
     <a href="#" class="cart-card__image">
-      <img src="${item.Image}" alt="${item.Name}" />
+      <img src="${item.Images.PrimarySmall}" alt="${item.Name}" />
     </a>
     <a href="#">
       <h2 class="card__name">${item.Name}</h2>

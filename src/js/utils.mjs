@@ -54,7 +54,7 @@ export function calculateDiscount(product) {
 
 export function updateCartCount() {
   const cartItems = getLocalStorage("so-cart") || [];
-  const cartCountElement = qs(".cart-count");
+  const cartCountElement = qs(".cart-badge");
 
   if (!cartCountElement) return;
 

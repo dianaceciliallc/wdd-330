@@ -940,3 +940,33 @@ footer .logo-title {
 #search-input:focus~.search-icon {
   color: #2563eb;
 }
+
+.breadcrumbs-container {
+  padding: 0.5rem 1rem;
+  background-color: #f4f4f4;
+  margin-bottom: 1rem;
+}
+
+.breadcrumbs {
+  display: flex;
+  list-style: none;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.breadcrumbs li + li::before {
+  content: "→";
+  margin-right: 0.5rem;
+  color: #666;
+}
+
+.breadcrumbs a {
+  text-decoration: none;
+  color: #333;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}

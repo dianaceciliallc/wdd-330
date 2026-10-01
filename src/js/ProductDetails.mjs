@@ -15,13 +15,20 @@ export default class ProductDetails {
   }
   addProductToCart() {
     let cartItems = getLocalStorage("so-cart") || [];
-    if (!Array.isArray(cartItems)) {
-      cartItems = [];
+    const isIndex = cartItems.findIndex((item) => item.Id === this.product.Id);
+    if (isIndex !== -1) {
+      cartItems[isIndex].quantity = (cartItems[isIndex].quantity || 1) + 1;
+    } else {
+      this.product.quantity = 1;
+      cartItems.push(this.product);
     }
-    cartItems.push(this.product);
+
     setLocalStorage("so-cart", cartItems);
-    updateCartCount();
+    if (typeof updateCartCount === "function") {
+      updateCartCount();
+    }
   }
+  
   renderProductDetails() {
     const { isDiscounted, discountPercent } = calculateDiscount(this.product);
     const productDetails = document.querySelector(".product-detail");

@@ -28,16 +28,25 @@ export default class ProductDetails {
       updateCartCount();
     }
   }
-  
+
   renderProductDetails() {
     const { isDiscounted, discountPercent } = calculateDiscount(this.product);
     const productDetails = document.querySelector(".product-detail");
+
+    const smallImg = this.product.Images?.PrimarySmall || this.product.Image;
+    const mediumImg = this.product.Images?.PrimaryMedium || this.product.Image;
+    const largeImg = this.product.Images?.PrimaryLarge || this.product.Image;
+
     productDetails.innerHTML = `
       <h3>${this.product.Brand.Name}</h3>
       <h2 class="divider">${this.product.NameWithoutBrand}</h2>
       
       <div class="product-detail__image-container">
-        <img class="divider" src="${this.product.Images.PrimaryExtraLarge}" alt="${this.product.Name}"/>
+        <picture class="divider">
+          <source media="(min-width: 900px)" srcset="${largeImg}">
+          <source media="(min-width: 600px)" srcset="${mediumImg}">
+          <img src="${mediumImg}" alt="${this.product.Name}" />
+        </picture>
         ${isDiscounted ? `<span class="discount-badge">-${discountPercent}% OFF</span>` : ""}
       </div>
 

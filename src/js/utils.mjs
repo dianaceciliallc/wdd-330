@@ -81,6 +81,23 @@ export async function loadTemplate(path) {
   return template;
 }
 
+export function setupSearch() {
+  const searchInput = document.querySelector("#search-input");
+
+  if (searchInput) {
+    searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+
+        if (query) {
+          window.location.href = `/product_listing/index.html?search=${encodeURIComponent(query)}`;
+        }
+      }
+    });
+  }
+}
+
 export async function loadHeaderFooter() {
   try {
     const headerTemplate = await loadTemplate("../partials/header.html");
@@ -96,6 +113,9 @@ export async function loadHeaderFooter() {
     if (footerElement) {
       renderWithTemplate(footerTemplate, footerElement);
     }
+
+    setupSearch();
+
   } catch (error) {
     console.error("Error header/footer:", error);
   }

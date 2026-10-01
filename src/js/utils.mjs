@@ -160,20 +160,22 @@ export function renderBreadcrumbs(category, itemCount = null, productName = null
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
-  if (path.includes("product_pages")) {
+  if (path.includes("product_listing")) {
+    const countItem = itemCount !== null ? `<li>(${itemCount} items)</li>` : "";
+
+    breadcrumbsElement.innerHTML = `
+      <li><a href="/index.html">Home</a></li>
+      <li>${formattedCategory}</li>
+      ${countItem}
+    `;
+  }
+  else if (path.includes("product_pages")) {
     const productTitle = productName ? `<li>${productName}</li>` : "";
 
     breadcrumbsElement.innerHTML = `
       <li><a href="/index.html">Home</a></li>
       <li><a href="/product_listing/index.html?category=${category.toLowerCase()}">${formattedCategory}</a></li>
       ${productTitle}
-    `;
-  }
-  else if (path.includes("product_listing")) {
-    const countText = itemCount !== null ? ` &rarr; (${itemCount} items)` : "";
-    breadcrumbsElement.innerHTML = `
-      <li><a href="/index.html">Home</a></li>
-      <li>${formattedCategory}${countText}</li>
     `;
   }
 }

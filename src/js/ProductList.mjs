@@ -2,7 +2,7 @@ import { renderListWithTemplate, calculateDiscount } from "./utils.mjs";
 
 function productCardTemplate(product) {
   const { isDiscounted, discountPercent } = calculateDiscount(product);
-  
+
   const smallImg = product.Images?.PrimarySmall || product.Image;
   const mediumImg = product.Images?.PrimaryMedium || product.Image;
   const largeImg = product.Images?.PrimaryLarge || product.Image;
@@ -34,33 +34,64 @@ function productCardTemplate(product) {
 }
 
 export default class ProductList {
-  constructor(category, dataSource, listElement) {
+  constructor(category, dataSource, listElement, searchParam = null) {
     this.category = category;
     this.dataSource = dataSource;
     this.listElement = listElement;
+    this.searchParam = searchParam;
     this.products = [];
   }
   async init() {
-    const list = await this.dataSource.getData(this.category);
+    const titleElement = document.querySelector(".title") || document.querySelector(".category-title");
 
-    this.products = list;
+    if (this.searchParam) {
+      const categories = ["tents", "backpacks", "sleeping-bags", "hammocks"];
 
-    this.sortProducts("name-asc");
-    this.renderProductList(this.products);
+      const results = await Promise.allSettled(
+        categories.map((cat) => this.dataSource.getData(cat))
+      );
 
-    const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
+      const allProducts = results
+        .filter((res) => res.status === "fulfilled" && Array.isArray(res.value))
+        .flatMap((res) => res.value);
 
-    const titleElement = document.querySelector('.category-title');
-    if (titleElement) {
-      titleElement.textContent = `Top Products: ${categoryName}`;
+      const term = decodeURIComponent(this.searchParam).toLowerCase().trim();
+
+      this.products = allProducts.filter((product) => {
+        const nameMatch = product.Name?.toLowerCase().includes(term);
+        const brandMatch = product.Brand?.Name?.toLowerCase().includes(term);
+        const categoryMatch = product.Category?.toLowerCase().includes(term);
+        const descMatch = product.DescriptionHtmlSimple?.toLowerCase().includes(term);
+
+        return nameMatch || brandMatch || categoryMatch || descMatch;
+      });
+
+      if (titleElement) {
+        titleElement.textContent = `Search results for "${this.searchParam}"`;
+      }
+
+    } else if (this.category) {
+      this.products = await this.dataSource.getData(this.category);
+      if (titleElement) {
+        titleElement.textContent = `Top Products: ${this.category}`;
+      }
     }
 
-    this.initSortListener();
+    this.renderProductList(this.products);
   }
+
   renderProductList(list) {
     this.listElement.innerHTML = "";
-    renderListWithTemplate(productCardTemplate, this.listElement, list, 'afterbegin', true);
+
+    if (!list || list.length === 0) {
+      this.listElement.innerHTML = `<p class="no-results">No products found for "${this.searchParam}"</p>`;
+      return;
+    }
+
+    renderListWithTemplate(productCardTemplate, this.listElement, list);
   }
+
+
   initSortListener() {
     const sortSelect = document.querySelector("#sort-select") || document.querySelector("select");
     if (!sortSelect) return;
@@ -71,6 +102,7 @@ export default class ProductList {
       this.renderProductList(this.products);
     });
   }
+
   sortProducts(criteria) {
     switch (criteria) {
       case "name-asc":

@@ -389,7 +389,7 @@ body {
 }
 
 /* Header & Navbar */
-.header {
+header {
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-stone);
   position: sticky;
@@ -628,11 +628,10 @@ body {
 }
 
 /* Footer */
-.footer {
+footer {
   background-color: var(--color-dark);
   color: var(--color-stone);
   padding: 3rem 1.5rem 2rem 1.5rem;
-  margin-top: 4rem;
 }
 
 .footer-desc {
@@ -651,11 +650,11 @@ body {
   text-align: center;
 }
 
-.footer .logo-icon img {
+footer .logo-icon img {
   filter: brightness(0) invert(1);
 }
 
-.footer .logo-title {
+footer .logo-title {
   color: var(--color-sand);
 }
 

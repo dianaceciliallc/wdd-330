@@ -59,7 +59,7 @@ export function updateCartCount() {
   if (!cartCountElement) return;
 
   const totalItems = cartItems.length;
-  
+
   if (totalItems > 0) {
     cartCountElement.textContent = totalItems;
     cartCountElement.classList.remove("hide");
@@ -82,12 +82,21 @@ export async function loadTemplate(path) {
 }
 
 export async function loadHeaderFooter() {
-  const headerTemplate = await loadTemplate("../src/public/partials/header.html");
-  const headerElement = document.getElementById("header");
+  try {
+    const headerTemplate = await loadTemplate("../partials/header.html");
+    const headerElement = document.getElementById("header");
 
-  const footerTemplate = await loadTemplate("../src/public/partials/footer.html");
-  const footerElement = document.getElementById("footer");
+    const footerTemplate = await loadTemplate("../partials/footer.html");
+    const footerElement = document.getElementById("footer");
 
-  renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
-  renderWithTemplate(footerTemplate, footerElement);
+    if (headerElement) {
+      renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
+    }
+
+    if (footerElement) {
+      renderWithTemplate(footerTemplate, footerElement);
+    }
+  } catch (error) {
+    console.error("Error al cargar header/footer:", error);
+  }
 }

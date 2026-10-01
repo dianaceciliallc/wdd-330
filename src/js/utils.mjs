@@ -97,6 +97,6 @@ export async function loadHeaderFooter() {
       renderWithTemplate(footerTemplate, footerElement);
     }
   } catch (error) {
-    console.error("Error al cargar header/footer:", error);
+    console.error("Error header/footer:", error);
   }
 }

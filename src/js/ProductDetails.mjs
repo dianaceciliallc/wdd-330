@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage, calculateDiscount, updateCartCount } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, calculateDiscount, updateCartCount, renderBreadcrumbs } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productID, dataSource) {
@@ -9,6 +9,10 @@ export default class ProductDetails {
   async init() {
     this.product = await this.dataSource.findProductById(this.productID);
     this.renderProductDetails();
+
+    if (this.product && this.product.Category) {
+      renderBreadcrumbs(this.product.Category, null, this.product.Name);
+    }
 
     document.getElementById("addToCart")
       .addEventListener("click", this.addProductToCart.bind(this));

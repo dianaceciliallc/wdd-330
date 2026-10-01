@@ -1,6 +1,6 @@
 import ProductData from './ProductData.mjs';
 import ProductList from './ProductList.mjs';
-import { loadHeaderFooter, getParam } from './utils.mjs';
+import { loadHeaderFooter, getParam, renderBreadcrumbs } from './utils.mjs';
 
 const searchParam = getParam("search");
 
@@ -14,3 +14,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   await productListView.init();
   loadHeaderFooter();
 });
+
+const categoryName = searchParam ? `Search: "${searchParam}"` : category;
+renderBreadcrumbs(categoryName, productList.length);

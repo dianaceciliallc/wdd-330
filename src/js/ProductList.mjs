@@ -1,4 +1,4 @@
-import { renderListWithTemplate, calculateDiscount } from "./utils.mjs";
+import { renderListWithTemplate, calculateDiscount, renderBreadcrumbs } from "./utils.mjs";
 
 function productCardTemplate(product) {
   const { isDiscounted, discountPercent } = calculateDiscount(product);
@@ -78,6 +78,9 @@ export default class ProductList {
     }
 
     this.renderProductList(this.products);
+
+    const label = this.searchParam ? `Search: "${this.searchParam}"` : this.category;
+    renderBreadcrumbs(label, this.products.length);
   }
 
   renderProductList(list) {

@@ -82,14 +82,22 @@ export async function loadTemplate(path) {
 }
 
 export function setupSearch() {
-  const searchInput = document.querySelector("#search-input");
+  const searchContainer = document.querySelector(".search-container");
+  const path = window.location.pathname;
 
+  if (path.includes("cart") || path.includes("product_pages")) {
+    if (searchContainer) {
+      searchContainer.style.display = "none";
+    }
+    return;
+  }
+
+  const searchInput = document.querySelector("#search-input");
   if (searchInput) {
     searchInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         const query = searchInput.value.trim();
-
         if (query) {
           window.location.href = `/product_listing/index.html?search=${encodeURIComponent(query)}`;
         }
@@ -118,5 +126,56 @@ export async function loadHeaderFooter() {
 
   } catch (error) {
     console.error("Error header/footer:", error);
+  }
+}
+
+export function renderBreadcrumbs(category, itemCount = null, productName = null) {
+  const breadcrumbsElement = document.querySelector("#breadcrumbs");
+  if (!breadcrumbsElement) return;
+
+  const path = window.location.pathname;
+
+  if (
+    path === "/" ||
+    (path.endsWith("/index.html") &&
+      !path.includes("product_listing") &&
+      !path.includes("product_pages") &&
+      !path.includes("cart"))
+  ) {
+    breadcrumbsElement.innerHTML = "";
+    return;
+  }
+
+  if (path.includes("cart")) {
+    breadcrumbsElement.innerHTML = `
+      <li><a href="/index.html">Home</a></li>
+      <li>Cart</li>
+    `;
+    return;
+  }
+
+  if (!category) return;
+
+  const formattedCategory = category
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+  if (path.includes("product_listing")) {
+    const countItem = itemCount !== null ? `<li>(${itemCount} items)</li>` : "";
+
+    breadcrumbsElement.innerHTML = `
+      <li><a href="/index.html">Home</a></li>
+      <li>${formattedCategory}</li>
+      ${countItem}
+    `;
+  }
+  else if (path.includes("product_pages")) {
+    const productTitle = productName ? `<li>${productName}</li>` : "";
+
+    breadcrumbsElement.innerHTML = `
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/product_listing/index.html?category=${category.toLowerCase()}">${formattedCategory}</a></li>
+      ${productTitle}
+    `;
   }
 }

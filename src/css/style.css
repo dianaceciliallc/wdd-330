@@ -97,7 +97,7 @@ header {
   font-family: var(--font-headline);
   text-decoration: none;
 
-  >img {
+  > img {
     width: 60px;
     height: 60px;
     object-fit: contain;
@@ -142,7 +142,7 @@ header {
     margin-top: -1.3em;
   }
 
-  >.logo-text {
+  > .logo-text {
     margin-top: -1.7em;
   }
 }
@@ -437,7 +437,7 @@ header {
   padding: 0 1.5rem;
   text-align: center;
 
-  >h2 {
+  > h2 {
     font-family: var(--font-serif);
     font-size: 2.25rem;
     color: var(--color-dark);
@@ -688,7 +688,7 @@ header {
   margin: 40px auto;
   padding: 0 20px;
 
-  >h2 {
+  > h2 {
     font-size: 1.5rem;
     color: var(--earth-text-dark);
     margin-bottom: 24px;
@@ -829,9 +829,11 @@ header {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(135deg,
-      var(--earth-terracotta),
-      var(--earth-terracotta-hover));
+  background: linear-gradient(
+    135deg,
+    var(--earth-terracotta),
+    var(--earth-terracotta-hover)
+  );
   color: white;
   border: none;
   border-radius: 10px;
@@ -953,7 +955,7 @@ header {
   margin: 0;
   font-size: 0.9rem;
 
-  li+li::before {
+  li + li::before {
     content: "→";
     margin-right: 0.5rem;
     color: #666;
@@ -1059,7 +1061,10 @@ footer {
   width: 100%;
   max-width: 500px;
   margin: 1rem auto;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 
   .custom-alert {
     display: flex;
@@ -1071,7 +1076,9 @@ footer {
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1.5;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.05),
+      0 2px 4px -1px rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;
 
@@ -1097,7 +1104,9 @@ footer {
       align-items: center;
       justify-content: center;
       border-radius: 4px;
-      transition: opacity 0.2s ease, background-color 0.2s ease;
+      transition:
+        opacity 0.2s ease,
+        background-color 0.2s ease;
 
       &:hover {
         opacity: 0.7;
@@ -1114,13 +1123,13 @@ footer {
   align-items: center;
   min-height: 100vh;
   padding: 20px;
-  background-color: #F4EFEA;
+  background-color: #f4efea;
 
   .card {
-    background: #FAF7F2;
+    background: #faf7f2;
     padding: 40px 30px;
     border-radius: 12px;
-    border: 1px solid #E5DDCB;
+    border: 1px solid #e5ddcb;
     box-shadow: 0 4px 15px rgba(60, 42, 33, 0.05);
     text-align: center;
     max-width: 480px;
@@ -1129,8 +1138,8 @@ footer {
     .icon-container {
       width: 70px;
       height: 70px;
-      background-color: #E2E8DD;
-      color: #556B2F;
+      background-color: #e2e8dd;
+      color: #556b2f;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -1140,26 +1149,26 @@ footer {
     }
 
     h1 {
-      color: #3C2A21;
+      color: #3c2a21;
       font-size: 24px;
       margin-bottom: 10px;
     }
 
     p {
-      color: #6D5D53;
+      color: #6d5d53;
       font-size: 15px;
       line-height: 1.5;
       margin-bottom: 25px;
     }
 
     .order-details {
-      background-color: #EFE8DC;
-      border: 1px solid #D8CCBB;
+      background-color: #efe8dc;
+      border: 1px solid #d8ccbb;
       border-radius: 8px;
       padding: 15px;
       margin-bottom: 25px;
       font-size: 14px;
-      color: #3C2A21;
+      color: #3c2a21;
 
       span {
         display: block;
@@ -1168,7 +1177,7 @@ footer {
 
       .order-number {
         font-weight: bold;
-        color: #C06C84;
+        color: #c06c84;
       }
     }
 
@@ -1187,20 +1196,20 @@ footer {
         transition: background-color 0.2s ease;
 
         &.btn-primary {
-          background-color: #C86D51;
-          color: #FFFFFF;
+          background-color: #c86d51;
+          color: #ffffff;
 
           &:hover {
-            background-color: #A85238;
+            background-color: #a85238;
           }
         }
 
         &.btn-secondary {
-          background-color: #6E7E65;
-          color: #FFFFFF;
+          background-color: #6e7e65;
+          color: #ffffff;
 
           &:hover {
-            background-color: #53624B;
+            background-color: #53624b;
           }
         }
       }

@@ -1,6 +1,5 @@
 import ExternalServices from "./ExternalServices.mjs";
-import Alert from "./Alert.mjs";
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, alertMessage } from "./utils.mjs";
 
 
 function packageItems(items) {
@@ -105,28 +104,26 @@ export default class CheckoutProcess {
 		order.items = packageItems(this.list);
 
 		const externalServices = new ExternalServices();
-		const alert = new Alert();
 
 		try {
 			const result = await externalServices.checkout(order);
 
-			alert.removeAlerts();
 			localStorage.removeItem(this.key);
 
-			alert.renderCustomAlerts([`Order ${result.orderId} has been successfully placed!`], false);
-
+			window.location.href = "/checkout/success.html";
+			getLocalStorage(this.key, []);
 		} catch (error) {
-			const errorMessages = [];
-
 			if (error.name === "servicesError" && error.message) {
-				for (const key in error.message) {
-					errorMessages.push(error.message[key]);
+				if (typeof error.message === "object") {
+					Object.values(error.message).forEach((msg) => {
+						alertMessage(msg, true);
+					});
+				} else {
+					alertMessage(error.message, true);
 				}
 			} else {
-				errorMessages.push("Something went wrong. Please check your order details.");
+				alertMessage("Something went wrong. Please check your order details.", true);
 			}
-
-			alert.renderCustomAlerts(errorMessages, true);
 		}
 	}
 }

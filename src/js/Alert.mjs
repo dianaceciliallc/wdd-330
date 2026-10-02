@@ -16,10 +16,16 @@ export default class Alert {
     }
   }
   renderAlerts(alerts) {
+    this.removeAlerts();
+
     const alertsHTML = alerts
       .map(
         (alert) =>
-          `<p style="background-color: ${alert.background}; color: ${alert.color};">${alert.message}</p>`
+          `<div class="alert-wrapper">
+            <p id="${alert.id}" class="custom-alert" style="background-color: ${alert.background}; color: ${alert.color};">
+              ${alert.message}
+            </p>
+          </div>`
       )
       .join("");
 
@@ -28,6 +34,25 @@ export default class Alert {
     const mainElement = document.querySelector("main");
     if (mainElement) {
       mainElement.insertAdjacentHTML("afterbegin", alertSectionHTML);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  renderCustomAlerts(messages, isError = true) {
+    const alertData = messages.map((msg, index) => ({
+      id: `alert-${index}`,
+      message: msg,
+      background: isError ? "#f8d7da" : "#d4edda",
+      color: isError ? "#721c24" : "#155724"
+    }));
+
+    this.renderAlerts(alertData);
+  }
+
+  removeAlerts() {
+    const existingAlerts = document.querySelector(".alert-list");
+    if (existingAlerts) {
+      existingAlerts.remove();
     }
   }
 }

@@ -140,8 +140,10 @@ export function renderBreadcrumbs(category, itemCount = null, productName = null
     (path.endsWith("/index.html") &&
       !path.includes("product_listing") &&
       !path.includes("product_pages") &&
-      !path.includes("cart"))
-  ) {
+      !path.includes("cart"))&&
+      !path.includes("checkout")&&
+      !path.includes("success"))
+  {
     breadcrumbsElement.innerHTML = "";
     return;
   }
@@ -177,5 +179,33 @@ export function renderBreadcrumbs(category, itemCount = null, productName = null
       <li><a href="/product_listing/index.html?category=${category.toLowerCase()}">${formattedCategory}</a></li>
       ${productTitle}
     `;
+  }
+}
+
+export function alertMessage(message, scroll = true) {
+  const alert = document.createElement('div');
+  alert.classList.add('alert-wrapper');
+
+  alert.innerHTML = `
+    <p class="custom-alert" style="background-color: ${scroll ? 'rgba(255, 0, 0, 0.1)' : 'rgba(0, 255, 0, 0.1)'}">
+      <span>${message}</span>
+      <button class="close-btn" aria-label="Close alert">X</button>
+    </p>
+  `;
+
+  const main = document.querySelector('main');
+
+  alert.addEventListener('click', function(e) {
+    if (e.target.classList.contains('close-btn') || e.target.innerText === 'X') {
+      main.removeChild(this);
+    }
+  });
+
+  if (main) {
+    main.prepend(alert);
+  }
+
+  if (scroll) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

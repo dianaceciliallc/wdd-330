@@ -15,6 +15,7 @@ export default class Alert {
       console.error("Error fetching alert data:", error);
     }
   }
+
   renderAlerts(alerts) {
     this.removeAlerts();
 
@@ -23,7 +24,7 @@ export default class Alert {
         (alert) =>
           `<div class="alert-wrapper">
             <p id="${alert.id}" class="custom-alert" style="background-color: ${alert.background}; color: ${alert.color};">
-              ${alert.message}
+              <span>${alert.message}</span>
             </p>
           </div>`
       )
@@ -34,7 +35,6 @@ export default class Alert {
     const mainElement = document.querySelector("main");
     if (mainElement) {
       mainElement.insertAdjacentHTML("afterbegin", alertSectionHTML);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 

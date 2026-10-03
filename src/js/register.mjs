@@ -1,6 +1,7 @@
 import ExternalServices from "./ExternalServices.mjs";
 import {
   alertMessage,
+  getAppRelativeRoot,
   loadHeaderFooter,
   renderBreadcrumbs,
 } from "./utils.mjs";
@@ -28,7 +29,7 @@ registrationForm.addEventListener("submit", async (event) => {
     await externalServices.registerUser(userData);
     const accountProfile = { name: fullName, email: userData.email };
     localStorage.setItem("so-account-profile", JSON.stringify(accountProfile));
-    window.location.href = "/checkout/success.html?type=registration";
+    window.location.href = `${getAppRelativeRoot()}checkout/success.html?type=registration`;
   } catch (error) {
     console.error("Unable to register account:", error);
     alertMessage(

@@ -141,8 +141,18 @@ export function renderWithTemplate(template, parentElement, data, callback) {
 
 export async function loadTemplate(path) {
   const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Unable to load template "${path}" (${response.status}).`);
+  }
   const template = await response.text();
   return template;
+}
+
+export function getAppRelativeRoot() {
+  const nestedPage = /\/(?:cart|checkout|login|orders|product_listing|product_pages|register)(?:\/|$)/.test(
+    window.location.pathname
+  );
+  return nestedPage ? "../" : "./";
 }
 
 export function setupSearch() {
@@ -163,7 +173,7 @@ export function setupSearch() {
         e.preventDefault();
         const query = searchInput.value.trim();
         if (query) {
-          window.location.href = `/product_listing/index.html?search=${encodeURIComponent(query)}`;
+          window.location.href = `${getAppRelativeRoot()}product_listing/index.html?search=${encodeURIComponent(query)}`;
         }
       }
     });
@@ -172,22 +182,35 @@ export function setupSearch() {
 
 export async function loadHeaderFooter() {
   try {
-    const headerTemplate = await loadTemplate("../partials/header.html");
+    const appRelativeRoot = getAppRelativeRoot();
+    const headerTemplate = await loadTemplate(
+      `${appRelativeRoot}partials/header.html`
+    );
     const headerElement = document.getElementById("header");
 
-    const footerTemplate = await loadTemplate("../partials/footer.html");
+    const footerTemplate = await loadTemplate(
+      `${appRelativeRoot}partials/footer.html`
+    );
     const footerElement = document.getElementById("footer");
 
     if (headerElement) {
-      renderWithTemplate(headerTemplate, headerElement, null, () => {
+      renderWithTemplate(
+        headerTemplate.replaceAll("{{basePath}}", appRelativeRoot),
+        headerElement,
+        null,
+        () => {
         updateCartCount();
         updateSavedCount();
         initializeAccountMenu();
-      });
+        }
+      );
     }
 
     if (footerElement) {
-      renderWithTemplate(footerTemplate, footerElement);
+      renderWithTemplate(
+        footerTemplate.replaceAll("{{basePath}}", appRelativeRoot),
+        footerElement
+      );
       initializeRegistrationAlert();
     }
 
@@ -219,7 +242,7 @@ function initializeAccountMenu() {
       sessionStorage.removeItem("so-account-email");
       sessionStorage.removeItem("so-auth-token");
       sessionStorage.removeItem("so-authenticated");
-      window.location.href = "/";
+      window.location.href = `${getAppRelativeRoot()}index.html`;
     });
   }
 }
@@ -257,7 +280,7 @@ function initializeRegistrationAlert() {
         *Winners will be selected at random and notified via email. By creating an account, you agree to receive promotional emails from us. You can unsubscribe at any time.
       </p>
     </section>
-    <a class="btn-checkout registration-promo__register" href="/register/index.html?type=registration">
+    <a class="btn-checkout registration-promo__register" href="${getAppRelativeRoot()}register/index.html?type=registration">
       Create an account
     </a>
   `;
@@ -299,7 +322,7 @@ export function renderBreadcrumbs(category, itemCount = null, productName = null
 
   if (path.includes("cart")) {
     breadcrumbsElement.innerHTML = `
-      <li><a href="/index.html">Home</a></li>
+      <li><a href="${getAppRelativeRoot()}index.html">Home</a></li>
       <li>Cart</li>
     `;
     return;
@@ -315,7 +338,7 @@ export function renderBreadcrumbs(category, itemCount = null, productName = null
     const countItem = itemCount !== null ? `<li>(${itemCount} items)</li>` : "";
 
     breadcrumbsElement.innerHTML = `
-      <li><a href="/index.html">Home</a></li>
+      <li><a href="${getAppRelativeRoot()}index.html">Home</a></li>
       <li>${formattedCategory}</li>
       ${countItem}
     `;
@@ -324,8 +347,8 @@ export function renderBreadcrumbs(category, itemCount = null, productName = null
     const productTitle = productName ? `<li>${productName}</li>` : "";
 
     breadcrumbsElement.innerHTML = `
-      <li><a href="/index.html">Home</a></li>
-      <li><a href="/product_listing/index.html?category=${category.toLowerCase()}">${formattedCategory}</a></li>
+      <li><a href="${getAppRelativeRoot()}index.html">Home</a></li>
+      <li><a href="${getAppRelativeRoot()}product_listing/index.html?category=${category.toLowerCase()}">${formattedCategory}</a></li>
       ${productTitle}
     `;
   }

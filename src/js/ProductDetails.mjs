@@ -1,6 +1,7 @@
 import {
   addProductToCart,
   calculateDiscount,
+  getAppRelativeRoot,
   renderBreadcrumbs,
   alertMessage,
   animateCartIcon,
@@ -128,7 +129,7 @@ export default class ProductDetails {
   addProductComment(form) {
     if (!hasAuthenticatedSession()) {
       alertMessage(
-        'Please <a href="/login/index.html">sign in</a> to post a comment.',
+        `Please <a href="${getAppRelativeRoot()}login/index.html">sign in</a> to post a comment.`,
         true
       );
       return;
@@ -175,7 +176,7 @@ export default class ProductDetails {
       !sessionStorage.getItem("so-account-email")
     ) {
       alertMessage(
-        'Please <a href="/login/index.html">sign in</a> to save products to your account.',
+        `Please <a href="${getAppRelativeRoot()}login/index.html">sign in</a> to save products to your account.`,
         true
       );
       return;

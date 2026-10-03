@@ -1,5 +1,5 @@
 import ExternalServices from "./ExternalServices.mjs";
-import { getLocalStorage, alertMessage } from "./utils.mjs";
+import { getAppRelativeRoot, getLocalStorage, alertMessage } from "./utils.mjs";
 
 
 function packageItems(items) {
@@ -38,7 +38,7 @@ export default class CheckoutProcess {
 	init() {
 		this.list = getLocalStorage(this.key) || [];
 		if (this.list.length === 0) {
-			window.location.replace("/cart/index.html");
+			window.location.replace(`${getAppRelativeRoot()}cart/index.html`);
 			return;
 		}
 		this.calculateItemSubTotal();
@@ -117,7 +117,7 @@ export default class CheckoutProcess {
 
 			localStorage.removeItem(this.key);
 
-			window.location.href = "/checkout/success.html";
+			window.location.href = `${getAppRelativeRoot()}checkout/success.html`;
 		} catch (error) {
 			console.error("Checkout error:", error);
 			let message = error.message;

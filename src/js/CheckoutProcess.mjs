@@ -36,7 +36,11 @@ export default class CheckoutProcess {
 	}
 
 	init() {
-		this.list = getLocalStorage(this.key);
+		this.list = getLocalStorage(this.key) || [];
+		if (this.list.length === 0) {
+			window.location.replace("/cart/index.html");
+			return;
+		}
 		this.calculateItemSubTotal();
 
 		const zipInput = document.querySelector("#zip");
@@ -95,6 +99,9 @@ export default class CheckoutProcess {
 			return;
 		}
 
+		this.calculateItemSubTotal();
+		this.calculateOrderTotal();
+
 		const order = formFormat(formElement);
 
 		order.orderDate = new Date().toISOString();
@@ -106,24 +113,21 @@ export default class CheckoutProcess {
 		const externalServices = new ExternalServices();
 
 		try {
-			const result = await externalServices.checkout(order);
+			await externalServices.checkout(order);
 
 			localStorage.removeItem(this.key);
 
 			window.location.href = "/checkout/success.html";
-			getLocalStorage(this.key, []);
 		} catch (error) {
-			if (error.name === "servicesError" && error.message) {
-				if (typeof error.message === "object") {
-					Object.values(error.message).forEach((msg) => {
-						alertMessage(msg, true);
-					});
-				} else {
-					alertMessage(error.message, true);
-				}
-			} else {
-				alertMessage("Something went wrong. Please check your order details.", true);
+			console.error("Checkout error:", error);
+			let message = error.message;
+			try {
+				const parsed = JSON.parse(error.message);
+				message = Object.values(parsed).join(", ");
+			} catch {
+				alertMessage("An error occurred during checkout. Please try again.", true);
 			}
+			alertMessage(message, true);
 		}
 	}
 }

@@ -11,6 +11,12 @@ const productListView = new ProductList("tents", dataSource, productList);
 const alert = new Alert("/json/alerts.json");
 
 window.addEventListener("DOMContentLoaded", async () => {
+  const newsletterForm = document.querySelector("#newsletter-form");
+  newsletterForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    window.location.href = "/checkout/success.html?type=subscription";
+  });
+
   await productListView.init();
   alert.init();
   updateCartCount();

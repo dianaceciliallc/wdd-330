@@ -1,3 +1,5 @@
+import { hasAuthenticatedSession } from "./ExternalServices.mjs";
+
 // wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
@@ -13,6 +15,68 @@ export function getLocalStorage(key) {
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
+
+function wishlistStorageKey() {
+  if (!hasAuthenticatedSession()) return null;
+  const email = sessionStorage.getItem("so-account-email")?.trim().toLowerCase();
+  return email ? `so-wishlist:${encodeURIComponent(email)}` : null;
+}
+
+export function getSavedItems() {
+  const key = wishlistStorageKey();
+  if (!key) return [];
+
+  const savedItems = JSON.parse(sessionStorage.getItem(key) || "[]");
+  if (!Array.isArray(savedItems)) {
+    throw new Error("Saved products data is invalid.");
+  }
+  return savedItems;
+}
+
+export function setSavedItems(items) {
+  const key = wishlistStorageKey();
+  if (!key) {
+    throw new Error("Sign in to save products to your account.");
+  }
+  sessionStorage.setItem(key, JSON.stringify(items));
+  updateSavedCount();
+}
+
+export function updateSavedCount() {
+  return getSavedItems().length;
+}
+
+export function addProductToCart(product, selectedColor = product.selectedColor || product.Colors?.[0] || null) {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const colorKey = selectedColor?.ColorCode || selectedColor?.ColorName || "";
+  const existingItem = cartItems.find((item) => {
+    const itemColor = item.selectedColor || item.Colors?.[0];
+    const itemColorKey = itemColor?.ColorCode || itemColor?.ColorName || "";
+    return String(item.Id) === String(product.Id) && itemColorKey === colorKey;
+  });
+
+  if (existingItem) {
+    existingItem.quantity = (existingItem.quantity || 1) + 1;
+  } else {
+    cartItems.push({
+      ...product,
+      selectedColor,
+      quantity: 1,
+    });
+  }
+
+  setLocalStorage("so-cart", cartItems);
+  updateCartCount();
+
+  const savedItems = getSavedItems();
+  const remainingSavedItems = savedItems.filter(
+    (item) => String(item.Id) !== String(product.Id)
+  );
+  if (remainingSavedItems.length !== savedItems.length) {
+    setSavedItems(remainingSavedItems);
+  }
+}
+
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
@@ -115,17 +179,103 @@ export async function loadHeaderFooter() {
     const footerElement = document.getElementById("footer");
 
     if (headerElement) {
-      renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
+      renderWithTemplate(headerTemplate, headerElement, null, () => {
+        updateCartCount();
+        updateSavedCount();
+        initializeAccountMenu();
+      });
     }
 
     if (footerElement) {
       renderWithTemplate(footerTemplate, footerElement);
+      initializeRegistrationAlert();
     }
 
     setupSearch();
 
   } catch (error) {
     console.error("Error header/footer:", error);
+  }
+}
+
+function initializeAccountMenu() {
+  const accountName = sessionStorage.getItem("so-account-name");
+  const isSignedIn = hasAuthenticatedSession();
+  const staffLoginLink = document.querySelector(".staff-login-link");
+  const registerLink = document.querySelector(".register-link");
+  const accountSession = document.querySelector(".account-session");
+
+  if (!staffLoginLink || !registerLink || !accountSession) return;
+
+  staffLoginLink.classList.toggle("hide", isSignedIn);
+  registerLink.classList.toggle("hide", isSignedIn);
+  accountSession.classList.toggle("hide", !isSignedIn);
+
+  if (isSignedIn) {
+    accountSession.querySelector(".account-name").textContent =
+      accountName || "Staff";
+    accountSession.querySelector(".account-signout").addEventListener("click", () => {
+      sessionStorage.removeItem("so-account-name");
+      sessionStorage.removeItem("so-account-email");
+      sessionStorage.removeItem("so-auth-token");
+      sessionStorage.removeItem("so-authenticated");
+      window.location.href = "/";
+    });
+  }
+}
+
+function initializeRegistrationAlert() {
+  const storageKey = "so-registration-promo-modal-seen";
+  if (
+    localStorage.getItem(storageKey) ||
+    hasAuthenticatedSession() ||
+    document.querySelector("#registration-promo-modal")
+  ) {
+    return;
+  }
+
+  const modal = document.createElement("dialog");
+  modal.id = "registration-promo-modal";
+  modal.className = "registration-promo-modal";
+  modal.setAttribute("aria-labelledby", "registration-promo-title");
+  modal.innerHTML = `
+    <button class="registration-promo__close" type="button" aria-label="Close promotion">
+      &times;
+    </button>
+    <p class="registration-promo__eyebrow">Giveaway</p>
+    <h2 id="registration-promo-title">Enter for a chance to win outdoor gear</h2>
+    <p class="registration-promo__disclaimer">
+      By creating an account, you will be entered into our monthly giveaway for a chance to win a sample camping gear bundle. No purchase necessary. See official rules for details.
+    </p>
+    <section class="registration-promo__details" aria-labelledby="registration-promo-details-title">
+      <h3 id="registration-promo-details-title">Sample camping gear bundle</h3>
+      <p>
+        Explore a sample collection inspired by our catalog: a tent for shelter,
+        a backpack for carrying essentials, and a sleeping bag for nights outdoors.
+      </p>
+      <p class="registration-promo__note">
+        *Winners will be selected at random and notified via email. By creating an account, you agree to receive promotional emails from us. You can unsubscribe at any time.
+      </p>
+    </section>
+    <a class="btn-checkout registration-promo__register" href="/register/index.html?type=registration">
+      Create an account
+    </a>
+  `;
+
+  modal.querySelector(".registration-promo__close").addEventListener("click", () => {
+    modal.close();
+  });
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) modal.close();
+  });
+  document.body.append(modal);
+
+  try {
+    modal.showModal();
+    localStorage.setItem(storageKey, "true");
+  } catch (error) {
+    modal.remove();
+    console.error("Unable to show registration promotion:", error);
   }
 }
 
@@ -242,19 +392,8 @@ export function renderQuickViewModal(product) {
   `;
 
   document.querySelector("#modalAddToCart").addEventListener("click", () => {
-    let cartItems = getLocalStorage("so-cart") || [];
-    const index = cartItems.findIndex((item) => item.Id === product.Id);
-
-    if (index !== -1) {
-      cartItems[index].quantity = (cartItems[index].quantity || 1) + 1;
-    } else {
-      product.quantity = 1;
-      cartItems.push(product);
-    }
-
-    setLocalStorage("so-cart", cartItems);
+    addProductToCart(product);
     alertMessage("Product added to cart successfully!", false);
-    if (typeof updateCartCount === "function") updateCartCount();
     modal.close();
   });
 

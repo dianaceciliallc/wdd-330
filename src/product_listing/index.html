@@ -1,53 +1,50 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sleep Outside | Home</title>
     <link rel="stylesheet" href="../css/style.css" />
     <script type="module" src="../js/product-listing.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header id="header" class="header"></header>
     <div class="breadcrumbs-container">
-        <ul id="breadcrumbs" class="breadcrumbs"></ul>
+      <ul id="breadcrumbs" class="breadcrumbs"></ul>
     </div>
     <main>
-        <section id="catalogo" class="catalog-section container">
-            <div class="section-header">
-                <span class="section-tag">Selected Equipment</span>
-                <h2 class="category-title"></h2>
-                <p>
-                    Explore our range of items designed for outdoor adventure
-                    with neutral aesthetics and extreme durability.
-                </p>
-            </div>
+      <section id="catalogo" class="catalog-section container">
+        <div class="section-header">
+          <span class="section-tag">Selected Equipment</span>
+          <h2 class="category-title"></h2>
+          <p>
+            Explore our range of items designed for outdoor adventure with
+            neutral aesthetics and extreme durability.
+          </p>
+        </div>
 
-            <div class="sort-container">
-                <label for="sort-select">Sort by:</label>
-                <select id="sort-select">
-                    <option value="name-asc">Name (A-Z)</option>
-                    <option value="name-desc">Name (Z-A)</option>
-                    <option value="price-asc">Price (Low to High)</option>
-                    <option value="price-desc">Price (High to Low)</option>
-                </select>
-            </div>
-            </div>
+        <div class="sort-container">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select">
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="price-asc">Price (Low to High)</option>
+            <option value="price-desc">Price (High to Low)</option>
+          </select>
+        </div>
 
-            <ul class="product-grid"></ul>
+        <ul class="product-grid"></ul>
 
-            <dialog id="quick-view-modal" class="product-modal">
-                <button id="close-modal" class="close-btn" aria-label="close modal">&times;</button>
-                <div id="modal-content" class="modal-body">
-                </div>
-            </dialog>
-        </section>
+        <dialog id="quick-view-modal" class="product-modal">
+          <button id="close-modal" class="close-btn" aria-label="close modal">
+            &times;
+          </button>
+          <div id="modal-content" class="modal-body"></div>
+        </dialog>
+      </section>
     </main>
 
-    <footer id="footer" class="footer">
-    </footer>
-</body>
-
+    <footer id="footer" class="footer"></footer>
+  </body>
 </html>

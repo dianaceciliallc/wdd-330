@@ -140,10 +140,9 @@ export function renderBreadcrumbs(category, itemCount = null, productName = null
     (path.endsWith("/index.html") &&
       !path.includes("product_listing") &&
       !path.includes("product_pages") &&
-      !path.includes("cart"))&&
-      !path.includes("checkout")&&
-      !path.includes("success"))
-  {
+      !path.includes("cart")) &&
+    !path.includes("checkout") &&
+    !path.includes("success")) {
     breadcrumbsElement.innerHTML = "";
     return;
   }
@@ -195,7 +194,7 @@ export function alertMessage(message, scroll = true) {
 
   const main = document.querySelector('main');
 
-  alert.addEventListener('click', function(e) {
+  alert.addEventListener('click', function (e) {
     if (e.target.classList.contains('close-btn') || e.target.innerText === 'X') {
       main.removeChild(this);
     }
@@ -208,4 +207,56 @@ export function alertMessage(message, scroll = true) {
   if (scroll) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+}
+
+export function renderQuickViewModal(product) {
+  const modal = document.querySelector("#quick-view-modal");
+  const modalContent = document.querySelector("#modal-content");
+
+  if (!modal || !modalContent) return;
+
+  const isDiscounted = product.SuggestedRetailPrice > product.FinalPrice;
+  const discountPercent = isDiscounted
+    ? Math.round(((product.SuggestedRetailPrice - product.FinalPrice) / product.SuggestedRetailPrice) * 100)
+    : 0;
+
+  modalContent.innerHTML = `
+    <h3>${product.Brand?.Name || ''}</h3>
+    <h2 class="divider">${product.NameWithoutBrand || product.Name}</h2>
+    
+    <div class="product-detail__image-container">
+      <img src="${product.Images?.PrimaryMedium || product.Image}" alt="${product.Name}" />
+      ${isDiscounted ? `<span class="discount-badge">-${discountPercent}% OFF</span>` : ""}
+    </div>
+
+    <p class="product-card__price">
+      ${isDiscounted ? `<span class="original-price">$${product.SuggestedRetailPrice.toFixed(2)}</span>` : ""}
+      <span class="final-price">$${product.FinalPrice.toFixed(2)}</span>
+    </p>
+
+    <div class="product__description">${product.DescriptionHtmlSimple}</div>
+    
+    <div class="product-detail__add">
+      <button id="modalAddToCart">Add to Cart</button>
+    </div>
+  `;
+
+  document.querySelector("#modalAddToCart").addEventListener("click", () => {
+    let cartItems = getLocalStorage("so-cart") || [];
+    const index = cartItems.findIndex((item) => item.Id === product.Id);
+
+    if (index !== -1) {
+      cartItems[index].quantity = (cartItems[index].quantity || 1) + 1;
+    } else {
+      product.quantity = 1;
+      cartItems.push(product);
+    }
+
+    setLocalStorage("so-cart", cartItems);
+    alertMessage("Product added to cart successfully!", false);
+    if (typeof updateCartCount === "function") updateCartCount();
+    modal.close();
+  });
+
+  modal.showModal();
 }

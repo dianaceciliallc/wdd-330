@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Management | SleepOutside</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <script type="module" src="../js/orders.mjs"></script>
+  </head>
+  <body>
+    <header id="header" class="divider"></header>
+    <div class="breadcrumbs-container">
+      <ul id="breadcrumbs" class="breadcrumbs"></ul>
+    </div>
+    <main class="checkout-main-container orders-page">
+      <h1>Order Management</h1>
+      <section class="checkout-form" aria-labelledby="order-lookup-title">
+        <h2 id="order-lookup-title">Find an order</h2>
+        <div class="form-group full-width">
+          <label for="order-code">Order code</label>
+          <input
+            id="order-code"
+            name="orderCode"
+            type="text"
+            autocomplete="off"
+            placeholder="Enter an order code"
+            required
+          />
+        </div>
+      </section>
+      <p class="orders-placeholder">No orders are available.</p>
+      <button id="logout-button" class="btn-checkout" type="button">
+        Sign out
+      </button>
+    </main>
+    <footer id="footer"></footer>
+  </body>
+</html>

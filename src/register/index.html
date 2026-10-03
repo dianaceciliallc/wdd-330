@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | SleepOutside</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <script type="module" src="../js/register.mjs"></script>
+  </head>
+  <body>
+    <header id="header" class="divider"></header>
+    <div class="breadcrumbs-container">
+      <ul id="breadcrumbs" class="breadcrumbs"></ul>
+    </div>
+    <main class="checkout-main-container account-page">
+      <h1 class="registration-heading">Join SleepOutside</h1>
+      <p class="registration-intro">
+        Create your SleepOutside account to get ready for your next adventure.
+      </p>
+      <form id="registration-form" class="checkout-form">
+        <section class="form-section">
+          <h2 id="registration-form-title">Your information</h2>
+          <div class="form-group full-width">
+            <label for="registration-name">Full name</label>
+            <input
+              id="registration-name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              minlength="2"
+              required
+            />
+          </div>
+          <div class="form-group full-width">
+            <label for="registration-address">Address</label>
+            <input
+              id="registration-address"
+              name="address"
+              type="text"
+              autocomplete="street-address"
+              required
+            />
+          </div>
+          <div class="form-group full-width">
+            <label for="registration-email">Email address</label>
+            <input
+              id="registration-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="form-group full-width">
+            <label for="registration-password">Password</label>
+            <input
+              id="registration-password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}"
+              title="Use at least 8 characters, including an uppercase letter, a lowercase letter, and a number."
+              aria-describedby="password-requirements"
+              required
+            />
+            <small id="password-requirements">
+              Use at least 8 characters, including an uppercase letter, a lowercase letter, and a number.
+            </small>
+          </div>
+        </section>
+        <button id="registration-submit" class="btn-checkout" type="submit">
+          Create account
+        </button>
+        <p class="auth-register-prompt">
+          Already have an account?
+          <a href="/login/index.html">Sign in here</a>.
+      </form>
+    </main>
+    <footer id="footer"></footer>
+  </body>
+</html>

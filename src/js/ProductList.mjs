@@ -1,7 +1,9 @@
-import { renderListWithTemplate, calculateDiscount, renderBreadcrumbs, renderQuickViewModal } from "./utils.mjs";
-
-const modal = document.querySelector("#quick-view-modal");
-const modalContent = document.querySelector("#modal-content");
+import {
+  calculateDiscount,
+  renderBreadcrumbs,
+  renderListWithTemplate,
+  renderQuickViewModal,
+} from "./utils.mjs";
 
 function productCardTemplate(product) {
   const { isDiscounted, discountPercent } = calculateDiscount(product);
@@ -32,23 +34,11 @@ function productCardTemplate(product) {
           </div>
         </div> 
       </a>
-      
-      <button class="quick-view-btn" data-id="${product.Id}">Quick View</button>
+      <div class="product-card__actions">
+        <button class="quick-view-btn" data-id="${product.Id}">Quick View</button>
+      </div>
     </li>
   `;
-}
-
-export function openQuickView(product) {
-  modalContent.innerHTML = quickViewTemplate(product);
-
-  const addToCartBtn = modalContent.querySelector("#modalAddToCart");
-  if (addToCartBtn) {
-    addToCartBtn.addEventListener("click", () => {
-      addProductToCart(product);
-    });
-  }
-
-  modal.renderQuickViewModal(product);
 }
 
 export default class ProductList {
@@ -73,7 +63,7 @@ export default class ProductList {
         .filter((res) => res.status === "fulfilled" && Array.isArray(res.value))
         .flatMap((res) => res.value);
 
-      const term = decodeURIComponent(this.searchParam).toLowerCase().trim();
+      const term = (this.searchParam).toLowerCase().trim();
 
       this.products = allProducts.filter((product) => {
         const nameMatch = product.Name?.toLowerCase().includes(term);
@@ -96,6 +86,7 @@ export default class ProductList {
     }
 
     this.renderProductList(this.products);
+    this.initSortListener();
 
     const label = this.searchParam ? `Search: "${this.searchParam}"` : this.category;
     renderBreadcrumbs(label, this.products.length);

@@ -19,6 +19,3 @@ window.addEventListener("DOMContentLoaded", async () => {
   await productListView.init();
   loadHeaderFooter();
 });
-
-const categoryName = searchParam ? `Search: "${searchParam}"` : category;
-renderBreadcrumbs(categoryName, productList.length);

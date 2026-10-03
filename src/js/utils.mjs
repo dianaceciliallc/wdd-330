@@ -260,3 +260,20 @@ export function renderQuickViewModal(product) {
 
   modal.showModal();
 }
+
+export function animateCartIcon() {
+  const cartElement =
+    document.querySelector(".cart-btn")
+
+  if (cartElement) {
+    cartElement.classList.add("cart-animate");
+
+    cartElement.addEventListener(
+      "animationend",
+      () => {
+        cartElement.classList.remove("cart-animate");
+      },
+      { once: true }
+    );
+  }
+}

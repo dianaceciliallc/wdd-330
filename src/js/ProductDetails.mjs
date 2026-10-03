@@ -1,4 +1,12 @@
-import { setLocalStorage, getLocalStorage, calculateDiscount, updateCartCount, renderBreadcrumbs, alertMessage } from "./utils.mjs";
+import {
+  setLocalStorage,
+  getLocalStorage,
+  calculateDiscount,
+  updateCartCount,
+  renderBreadcrumbs,
+  alertMessage,
+  animateCartIcon
+} from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productID, dataSource) {
@@ -14,8 +22,12 @@ export default class ProductDetails {
       renderBreadcrumbs(this.product.Category, null, this.product.Name);
     }
 
-    document.getElementById("addToCart")
-      .addEventListener("click", this.addProductToCart.bind(this));
+    const addButton = document.getElementById("addToCart");
+    if (addButton) {
+      addButton.addEventListener("click", () => {
+        this.addProductToCart();
+      });
+    }
   }
   addProductToCart() {
     let cartItems = getLocalStorage("so-cart") || [];
@@ -26,13 +38,14 @@ export default class ProductDetails {
       this.product.quantity = 1;
       cartItems.push(this.product);
     }
-
-    alertMessage("Product added to cart successfully!", false);
-
+    
     setLocalStorage("so-cart", cartItems);
     if (typeof updateCartCount === "function") {
       updateCartCount();
     }
+
+    alertMessage("Product added to cart successfully!", false);
+    animateCartIcon();
   }
 
   renderProductDetails() {

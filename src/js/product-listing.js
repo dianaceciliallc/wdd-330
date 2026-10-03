@@ -1,6 +1,6 @@
 import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
-import { loadHeaderFooter, getParam, renderBreadcrumbs } from "./utils.mjs";
+import { loadHeaderFooter, getParam } from "./utils.mjs";
 
 const searchParam = getParam("search");
 

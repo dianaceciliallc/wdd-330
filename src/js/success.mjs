@@ -1,4 +1,8 @@
-import { loadHeaderFooter, renderBreadcrumbs } from "./utils.mjs";
+import {
+  getAppRelativeRoot,
+  loadHeaderFooter,
+  renderBreadcrumbs,
+} from "./utils.mjs";
 import { hasAuthenticatedSession } from "./ExternalServices.mjs";
 
 const successType = new URLSearchParams(window.location.search).get("type");
@@ -17,10 +21,10 @@ if (successType === "subscription") {
   successMessage.textContent =
     "Thank you for registering with SleepOutside. Your information has been received.";
   if (hasAuthenticatedSession()) {
-    successAction.href = "/orders/index.html";
+    successAction.href = `${getAppRelativeRoot()}orders/index.html`;
     successAction.textContent = "Go to Orders";
   } else {
-    successAction.href = "/login/index.html";
+    successAction.href = `${getAppRelativeRoot()}login/index.html`;
     successAction.textContent = "Sign in";
   }
 }

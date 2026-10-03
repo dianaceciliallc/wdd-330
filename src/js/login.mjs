@@ -1,4 +1,9 @@
-import { alertMessage, loadHeaderFooter, renderBreadcrumbs } from "./utils.mjs";
+import {
+  alertMessage,
+  getAppRelativeRoot,
+  loadHeaderFooter,
+  renderBreadcrumbs,
+} from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
 const authenticatedKey = "so-authenticated";
@@ -51,8 +56,8 @@ loginForm.addEventListener("submit", async (event) => {
   }
 
   const requestedPath = new URLSearchParams(window.location.search).get("redirect");
-  const safeRedirect =
-    requestedPath === "/orders/index.html" ? requestedPath : "/orders/index.html";
+  const ordersPath = `${getAppRelativeRoot()}orders/index.html`;
+  const safeRedirect = requestedPath === ordersPath ? requestedPath : ordersPath;
   window.location.href = safeRedirect;
 });
 

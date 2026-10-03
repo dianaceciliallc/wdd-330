@@ -1,5 +1,6 @@
 import {
   calculateDiscount,
+  getAppRelativeRoot,
   renderBreadcrumbs,
   renderListWithTemplate,
   renderQuickViewModal,
@@ -14,7 +15,7 @@ function productCardTemplate(product) {
 
   return `
     <li class="product-card--new" data-category="tents">
-      <a class="product-link" href="/product_pages/index.html?product=${product.Id}">
+      <a class="product-link" href="${getAppRelativeRoot()}product_pages/index.html?product=${product.Id}">
         <div class="product-img-wrapper">
           ${isDiscounted ? `<span class="discount-badge">-${discountPercent}% OFF</span>` : ""}
           <span class="product-tag">${product.Brand.Name}</span>

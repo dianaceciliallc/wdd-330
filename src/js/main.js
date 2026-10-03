@@ -2,7 +2,7 @@ import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
 import Alert from "./Alert.mjs";
 import {
-  getAppRelativeRoot,
+  getPath,
   updateCartCount,
   loadHeaderFooter,
 } from "./utils.mjs";
@@ -18,7 +18,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const newsletterForm = document.querySelector("#newsletter-form");
   newsletterForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    window.location.href = `${getAppRelativeRoot()}checkout/success.html?type=subscription`;
+    window.location.href = `${getPath()}checkout/success.html?type=subscription`;
   });
 
   await productListView.init();

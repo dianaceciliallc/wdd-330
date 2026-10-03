@@ -1,5 +1,5 @@
 import {
-  getAppRelativeRoot,
+  getPath,
   loadHeaderFooter,
   renderBreadcrumbs,
 } from "./utils.mjs";
@@ -21,10 +21,10 @@ if (successType === "subscription") {
   successMessage.textContent =
     "Thank you for registering with SleepOutside. Your information has been received.";
   if (hasAuthenticatedSession()) {
-    successAction.href = `${getAppRelativeRoot()}orders/index.html`;
+    successAction.href = `${getPath()}orders/index.html`;
     successAction.textContent = "Go to Orders";
   } else {
-    successAction.href = `${getAppRelativeRoot()}login/index.html`;
+    successAction.href = `${getPath()}login/index.html`;
     successAction.textContent = "Sign in";
   }
 }

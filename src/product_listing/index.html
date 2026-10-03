@@ -5,11 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sleep Outside | Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
     <link rel="stylesheet" href="../css/style.css" />
     <script type="module" src="../js/product-listing.js"></script>
 </head>
@@ -43,6 +38,11 @@
 
             <ul class="product-grid"></ul>
 
+            <dialog id="quick-view-modal" class="product-modal">
+                <button id="close-modal" class="close-btn" aria-label="close modal">&times;</button>
+                <div id="modal-content" class="modal-body">
+                </div>
+            </dialog>
         </section>
     </main>
 

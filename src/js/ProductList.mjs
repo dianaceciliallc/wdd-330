@@ -1,4 +1,7 @@
-import { renderListWithTemplate, calculateDiscount, renderBreadcrumbs } from "./utils.mjs";
+import { renderListWithTemplate, calculateDiscount, renderBreadcrumbs, renderQuickViewModal } from "./utils.mjs";
+
+const modal = document.querySelector("#quick-view-modal");
+const modalContent = document.querySelector("#modal-content");
 
 function productCardTemplate(product) {
   const { isDiscounted, discountPercent } = calculateDiscount(product);
@@ -10,7 +13,7 @@ function productCardTemplate(product) {
   return `
     <li class="product-card--new" data-category="tents">
       <a class="product-link" href="/product_pages/index.html?product=${product.Id}">
-      <div class="product-img-wrapper">
+        <div class="product-img-wrapper">
           ${isDiscounted ? `<span class="discount-badge">-${discountPercent}% OFF</span>` : ""}
           <span class="product-tag">${product.Brand.Name}</span>
           <picture>
@@ -29,8 +32,23 @@ function productCardTemplate(product) {
           </div>
         </div> 
       </a>
+      
+      <button class="quick-view-btn" data-id="${product.Id}">Quick View</button>
     </li>
   `;
+}
+
+export function openQuickView(product) {
+  modalContent.innerHTML = quickViewTemplate(product);
+
+  const addToCartBtn = modalContent.querySelector("#modalAddToCart");
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener("click", () => {
+      addProductToCart(product);
+    });
+  }
+
+  modal.renderQuickViewModal(product);
 }
 
 export default class ProductList {
@@ -81,6 +99,8 @@ export default class ProductList {
 
     const label = this.searchParam ? `Search: "${this.searchParam}"` : this.category;
     renderBreadcrumbs(label, this.products.length);
+
+    this.setupQuickViewListeners();
   }
 
   renderProductList(list) {
@@ -93,7 +113,6 @@ export default class ProductList {
 
     renderListWithTemplate(productCardTemplate, this.listElement, list);
   }
-
 
   initSortListener() {
     const sortSelect = document.querySelector("#sort-select") || document.querySelector("select");
@@ -126,6 +145,44 @@ export default class ProductList {
         break;
       default:
         break;
+    }
+  }
+
+  setupQuickViewListeners() {
+    if (!this.listElement) return;
+
+    this.listElement.addEventListener("click", (event) => {
+      const btn = event.target.closest(".quick-view-btn");
+      if (btn) {
+        event.preventDefault();
+        const productId = btn.dataset.id;
+        const product = this.products.find((p) => p.Id === productId);
+        if (product) {
+          renderQuickViewModal(product);
+        }
+      }
+    });
+
+    const modal = document.querySelector("#quick-view-modal");
+    const closeModalBtn = document.querySelector("#close-modal");
+
+    if (modal && closeModalBtn) {
+      if (!modal.dataset.hasListener) {
+        closeModalBtn.addEventListener("click", () => modal.close());
+
+        modal.addEventListener("click", (e) => {
+          const rect = modal.getBoundingClientRect();
+          const isInDialog = (
+            rect.top <= e.clientY &&
+            e.clientY <= rect.top + rect.height &&
+            rect.left <= e.clientX &&
+            e.clientX <= rect.left + rect.width
+          );
+          if (!isInDialog) modal.close();
+        });
+
+        modal.dataset.hasListener = "true";
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import {
   alertMessage,
-  getAppRelativeRoot,
+  getPath,
   loadHeaderFooter,
   renderBreadcrumbs,
 } from "./utils.mjs";
@@ -56,7 +56,7 @@ loginForm.addEventListener("submit", async (event) => {
   }
 
   const requestedPath = new URLSearchParams(window.location.search).get("redirect");
-  const ordersPath = `${getAppRelativeRoot()}orders/index.html`;
+  const ordersPath = `${getPath()}orders/index.html`;
   const safeRedirect = requestedPath === ordersPath ? requestedPath : ordersPath;
   window.location.href = safeRedirect;
 });

@@ -1,7 +1,7 @@
 import {
     addProductToCart,
     alertMessage,
-    getAppRelativeRoot,
+    getPath,
     getLocalStorage,
     getSavedItems,
     renderListWithTemplate,
@@ -54,7 +54,7 @@ function savedItemTemplate(item) {
     const image = item.Images?.PrimarySmall || item.Image || "";
     return `
     <li class="saved-item product-card--new">
-        <a class="product-link" href="${getAppRelativeRoot()}product_pages/index.html?product=${item.Id}">
+        <a class="product-link" href="${getPath()}product_pages/index.html?product=${item.Id}">
             <div class="product-img-wrapper">
                 <img src="${image}" alt="${item.Name}" loading="lazy" />
             </div>

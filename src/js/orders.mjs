@@ -1,5 +1,5 @@
 import {
-  getAppRelativeRoot,
+  getPath,
   loadHeaderFooter,
   renderBreadcrumbs,
 } from "./utils.mjs";
@@ -7,7 +7,7 @@ import { hasAuthenticatedSession } from "./ExternalServices.mjs";
 
 if (!hasAuthenticatedSession()) {
   window.location.replace(
-    `${getAppRelativeRoot()}login/index.html?redirect=${getAppRelativeRoot()}orders/index.html`
+    `${getPath()}login/index.html?redirect=${getPath()}orders/index.html`
   );
 } else {
   document.querySelector("#logout-button").addEventListener("click", () => {
@@ -15,7 +15,7 @@ if (!hasAuthenticatedSession()) {
     sessionStorage.removeItem("so-authenticated");
     sessionStorage.removeItem("so-account-name");
     sessionStorage.removeItem("so-account-email");
-    window.location.replace(`${getAppRelativeRoot()}login/index.html`);
+    window.location.replace(`${getPath()}login/index.html`);
   });
 
   loadHeaderFooter();
